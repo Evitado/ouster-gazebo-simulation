@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!-- Modified from the work of Wil Selby (https://github.com/wilselby/ouster_example/blob/master/ouster_description/urdf/OS1-64.urdf.xacro) -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="os1_64">
+  
   <xacro:property name="PI" value="3.1415926535897931"/>
 
   <xacro:macro name="os1_64" params="*origin parent:=base name:=ouster reduced:=true prefix:=/os1_cloud_node hz:=10 samples:=512 min_range:=0.8 max_range:=100 noise:=0.008 min_angle_v:=-16.6 max_angle_v:=16.6 gpu:=false">
@@ -28,6 +29,7 @@
     </joint>
 
     <link name="${name}_sensor">
+      
       <inertial>
         <mass value="0.425"/>
         <origin xyz="0 0 0.03675" rpy="0 0 0" />
@@ -56,7 +58,21 @@
       <child link="${name}_lidar"/>
     </joint>
 
+    <!-- Fix w.r.t. world by adding a fixed link -->
+    <!--
+    <link name="world" />
+    <joint name="world_joint"  type="fixed">
+        <origin xyz="0 0 1." rpy="0 0 0" />
+        <parent link="world"/>
+        <child link="base_footprint_link"/>
+    </joint>
+    -->
+
+
+
     <gazebo reference="${name}_lidar">
+      <static>true</static>
+
       <sensor type="${gpu_str}ray" name="${name}_lidar">
         <pose>0 0 0 0 0 0</pose>
         <visualize>false</visualize>
